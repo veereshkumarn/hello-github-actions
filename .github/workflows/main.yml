@@ -14,9 +14,8 @@ jobs:
     # strategy:
     #   matrix:
     #     images: [ nginx ] 
-    #outputs:
-    #  #format('{0}', matrix.images): ${{ steps.pull.outputs[format('{0}', matrix.images)] }}
-    #  SHA: ${{ steps.pull.outputs.SHA }}
+    outputs:
+     matrix: ${{ steps.matrix.outputs.matrix }}
     
     steps:        
           # Checkout Repo
@@ -27,15 +26,11 @@ jobs:
           
           # Pull Latest Images
           - name: Check Changes Files
-            id: check
-            shell: bash
+            id: matrix
+            shell: pwsh
             run: |
-                files=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }})
-                #git show --pretty="" --name-only ${{ github.sha }}
-                echo $files
-                #git log --name-only -n 1 ${{ github.sha }} #| Where-Object {$_ -CLike "*/Dockerfile"} | ForEach-Object { Write-Host "$_"}
-                #git show --stat --name-only ${{ github.sha }}
-                
-                #git show --name-only ${{ github.sha }} | Where-Object {$_ -CLike "*/Dockerfile"} 
+                $files=(git diff-tree --no-commit-id --name-only -r ${{ github.sha }})
+                write-host $files                
+                $matrix=(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | Where-Object {$_ -CLike "*/Dockerfile"} )
                 #| ForEach-Object { Write-Host "$_"}
-                
+                echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
