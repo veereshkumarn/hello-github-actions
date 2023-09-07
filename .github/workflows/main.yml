@@ -29,6 +29,6 @@ jobs:
             shell: pwsh
             run: |
                 ls -l
-                git diff --no-commit-id --name-only -r ${{ github.sha }}
+                git diff --no-commit-id --name-only -r origin/${{ github.sha }}
                 git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | Where-Object {$_ -CLike "*/Dockerfile"} | ForEach-Object { Write-Host "$_"}
                 
