@@ -61,14 +61,13 @@ jobs:
             shell: pwsh
             run: write-host "${{ steps.matrix.outputs.matrix }}"
   build:
-    name: Build "${{ matrix }}" on ${{ matrix }}
+    name: ImageBuild
     needs: ImageScanner
     strategy:
-      matrix: 
-        images: ${{ fromJson(needs.ImageScanner.outputs.matrix.Images) }}
+      matrix: ${{ fromJson(needs.ImageScanner.outputs.matrix) }}
     runs-on: ubuntu-latest #${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
       - name: Build
         run: |
-           echo "${{ matrix.images }}"
+           echo "${{ matrix }}"
