@@ -23,7 +23,7 @@ jobs:
           - name: Check out the repository
             uses: actions/checkout@v4
             with:
-              fetch-depth: 1
+              fetch-depth: 2
           
           # Pull Latest Images
           - name: Check Changes Files
