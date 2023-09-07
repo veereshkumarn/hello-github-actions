@@ -33,13 +33,14 @@ jobs:
                 write-host $files                
                 $matrix=(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | Where-Object {$_ -CLike "*/Dockerfile"} )
                 #write-host $matrix
-                $images = @()
+                $images = New-Object Collections.Generic.List[String]
                 foreach ($Image in $matrix) {
                     #write-host $Image
-                $images = $images + @{
-                        ImageName = $Image.Split("/")[1]
-                        Path =  $Image
-                    }                    
+                    $images.Add($Image.Split("/")[1])
+                # $images = $images + @{
+                #         ImageName = $Image.Split("/")[1]
+                #         Path =  $Image
+                #     }                    
                 }
                 $images = $images | ConvertTo-Json
                 write-host $images
