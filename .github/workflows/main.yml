@@ -43,9 +43,10 @@ jobs:
                 }
                 $images = $images | ConvertTo-Json
                 write-host $images
-                echo 'matrix<<EOT' >> "$env:GITHUB_OUTPUT"
-                echo "$images" >> "$env:GITHUB_OUTPUT"
-                echo 'EOT' >> "$env:GITHUB_OUTPUT"
+                echo "matrix=$(echo $images)" >> "$env:GITHUB_OUTPUT"
+                # echo 'matrix<<EOT' >> "$env:GITHUB_OUTPUT"
+                # echo "$images" >> "$env:GITHUB_OUTPUT"
+                # echo 'EOT' >> "$env:GITHUB_OUTPUT"
                  
                 
           - name: check matrix
