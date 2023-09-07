@@ -1,11 +1,33 @@
-name: A workflow for my Hello World file
-on: push
+name: Image Scanner
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'images/**/Dockerfile'
+
 jobs:
-  build:
-    name: Hello world action
+  ImageScanner:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: ./action-a
-        with:
-          MY_NAME: "Veeresh"
+    # strategy:
+    #   matrix:
+    #     images: [ nginx ] 
+    #outputs:
+    #  #format('{0}', matrix.images): ${{ steps.pull.outputs[format('{0}', matrix.images)] }}
+    #  SHA: ${{ steps.pull.outputs.SHA }}
+    
+    steps:        
+          # Checkout Repo
+          - name: Check out the repository
+            uses: actions/checkout@v4
+          
+          # Pull Latest Images
+          - name: Check Changes Files
+            id: check
+            shell: pwsh
+            run: |
+                git diff-tree --no-commit-id --name-only -r ${{ github.sha }}
+                git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | Where-Object {$_ -CLike "*/Dockerfile"} | ForEach-Object { Write-Host "$_"}
+                
