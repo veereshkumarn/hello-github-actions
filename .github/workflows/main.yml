@@ -41,7 +41,8 @@ jobs:
                     }                    
                 }
                 $images = $images | ConvertTo-Json
-                echo 'matrix=($images)' >> "$env:GITHUB_OUTPUT"
+                write-host $images
+                echo "matrix=\'$images\'" >> "$env:GITHUB_OUTPUT"
           - name: check matrix
             shell: pwsh
             run: write-host "${{ steps.matrix.outputs.matrix }}"
