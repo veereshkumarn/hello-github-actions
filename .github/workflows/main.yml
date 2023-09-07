@@ -64,7 +64,7 @@ jobs:
     name: Build "${{ matrix }}" on ${{ matrix }}
     needs: ImageScanner
     strategy:
-      matrix: ${{ needs.ImageScanner.outputs.matrix.Images }}
+      matrix: ${{ [fromJson(needs.ImageScanner.outputs.matrix.Images)] }}
     runs-on: ubuntu-latest #${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
