@@ -28,8 +28,8 @@ jobs:
             id: check
             shell: pwsh
             run: |
-                ls -l
-                git show --name-only ${{ github.sha }}
+                git log --name-only -n 1 | Where-Object {$_ -CLike "*/Dockerfile"} | ForEach-Object { Write-Host "$_"}
+                #git show --name-only ${{ github.sha }}
                 
                 git show --name-only ${{ github.sha }} | Where-Object {$_ -CLike "*/Dockerfile"} | ForEach-Object { Write-Host "$_"}
                 
