@@ -37,4 +37,14 @@ jobs:
           - name: check matrix
             shell: pwsh
             run: write-host "${{ steps.matrix.outputs.matrix }}"
-           
+  build:
+    name: Build "${{ matrix }}" on ${{ matrix }}
+    needs: ImageScanner
+    strategy:
+      matrix: ${{needs.ImageScanner.outputs.matrix}}
+    runs-on: ubuntu-latest #${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: |
+           echo "${{ matrix }}"
