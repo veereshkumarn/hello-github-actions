@@ -32,8 +32,16 @@ jobs:
                 $files=(git diff-tree --no-commit-id --name-only -r ${{ github.sha }})
                 write-host $files                
                 $matrix=(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | Where-Object {$_ -CLike "*/Dockerfile"} )
-                write-host $matrix
-                echo "matrix=$matrix" >> "$env:GITHUB_OUTPUT"
+                $images = @()
+                foreach ($Image in $matrix) {
+                    write-host $Image
+                $images = $images + @{
+                        ImageName = $Image.Split("/")[1]
+                        Path =  $Image
+                    }                    
+                }
+                $images = $images | ConvertTo-Json
+                echo "matrix=$images" >> "$env:GITHUB_OUTPUT"
           - name: check matrix
             shell: pwsh
             run: write-host "${{ steps.matrix.outputs.matrix }}"
@@ -41,7 +49,7 @@ jobs:
     name: Build "${{ matrix }}" on ${{ matrix }}
     needs: ImageScanner
     strategy:
-      matrix: ${{needs.ImageScanner.outputs.matrix}}
+      matrix: ${{fromJson(needs.ImageScanner.outputs.matrix)}}
     runs-on: ubuntu-latest #${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
