@@ -42,9 +42,14 @@ jobs:
                 #         Path =  $Image
                 #     }                    
                 }
+                $jobs = @{
+                        Images = $images
+                  }
+
+                $images | ConvertTo-Json 
                 $images = $images | ConvertTo-Json
                 write-host $images
-                $images > images.json
+                $jobs | ConvertTo-Json > images.json
                 echo "matrix=$(get-content images.json)" >> "$env:GITHUB_OUTPUT"
                 # {                
                 #   echo 'matrix<<EOT'
