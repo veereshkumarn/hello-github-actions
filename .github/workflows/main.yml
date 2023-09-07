@@ -32,10 +32,10 @@ jobs:
                 $files=(git diff-tree --no-commit-id --name-only -r ${{ github.sha }})
                 write-host $files                
                 $matrix=(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | Where-Object {$_ -CLike "*/Dockerfile"} )
-                write-host $matrix
+                #write-host $matrix
                 $images = @()
                 foreach ($Image in $matrix) {
-                    write-host $Image
+                    #write-host $Image
                 $images = $images + @{
                         ImageName = $Image.Split("/")[1]
                         Path =  $Image
@@ -43,12 +43,13 @@ jobs:
                 }
                 $images = $images | ConvertTo-Json
                 write-host $images
-                #echo "matrix=$(echo $images)" >> "$env:GITHUB_OUTPUT"
-                {                
-                  echo 'matrix<<EOT'
-                  echo $images
-                  echo EOT
-                } >> "$env:GITHUB_OUTPUT"
+                $images > images.json
+                echo "matrix=$(get-content images.json)" >> "$env:GITHUB_OUTPUT"
+                # {                
+                #   echo 'matrix<<EOT'
+                #   echo $images
+                #   echo EOT
+                # } >> "$env:GITHUB_OUTPUT"
                 
           - name: check matrix
             shell: pwsh
