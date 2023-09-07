@@ -34,3 +34,7 @@ jobs:
                 $matrix=(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | Where-Object {$_ -CLike "*/Dockerfile"} )
                 #| ForEach-Object { Write-Host "$_"}
                 echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+          - name: check matrix
+            shell: pwsh
+            run: write-host "${{ steps.matrix.outputs.matrix }}"
+           
