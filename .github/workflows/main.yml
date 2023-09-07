@@ -26,6 +26,7 @@ jobs:
           # Pull Latest Images
           - name: Check Changes Files
             id: check
+            shell: pwsh
             run: |
                 ls -l
                 git diff --no-commit-id --name-only -r ${{ github.sha }}
