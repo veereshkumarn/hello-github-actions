@@ -26,8 +26,8 @@ jobs:
           # Pull Latest Images
           - name: Check Changes Files
             id: check
-            shell: pwsh
+            shell: bash
             run: |
                 git diff-tree --no-commit-id --name-only -r ${{ github.sha }}
-                git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | Where-Object {$_ -CLike "*/Dockerfile"} | ForEach-Object { Write-Host "$_"}
+                #git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | Where-Object {$_ -CLike "*/Dockerfile"} | ForEach-Object { Write-Host "$_"}
                 
