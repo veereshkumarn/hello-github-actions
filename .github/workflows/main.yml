@@ -35,18 +35,11 @@ jobs:
                 #write-host $matrix
                 $images = New-Object Collections.Generic.List[String]
                 foreach ($Image in $matrix) {
-                    #write-host $Image
-                    $images.Add($Image.Split("/")[1])
-                # $images = $images + @{
-                #         ImageName = $Image.Split("/")[1]
-                #         Path =  $Image
-                #     }                    
+                    $images.Add($Image.Split("/")[1])                  
                 }
                 $jobs = @{
                         Images = $images
                   }
-
-                $images | ConvertTo-Json 
                 $images = $images | ConvertTo-Json
                 write-host $images
                 $jobs | ConvertTo-Json > images.json
@@ -70,4 +63,4 @@ jobs:
       - uses: actions/checkout@v2
       - name: Build
         run: |
-           echo "${{ matrix }}"
+           echo "${{ matrix.Images }}"
