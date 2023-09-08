@@ -64,3 +64,4 @@ jobs:
       - name: Build
         run: |
            echo "${{ matrix.Images }}"
+           docker build "images/${{ matrix.Images }}/Dockerfile"
