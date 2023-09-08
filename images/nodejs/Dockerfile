@@ -1,2 +1,1 @@
-FROM node
-CMD []
+FROM node:latest

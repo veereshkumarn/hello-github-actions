@@ -60,9 +60,10 @@ jobs:
       matrix: ${{ fromJson(needs.ImageScanner.outputs.matrix) }}
     runs-on: ubuntu-latest #${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Build
+        working-directory: "images/${{ matrix.Images }}"
         run: |
            echo "${{ matrix.Images }}"
-           docker build "images/${{ matrix.Images }}/Dockerfile"
+           docker build . -t nginx:latest
 
