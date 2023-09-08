@@ -1,2 +1,1 @@
-FROM nginx
-CMD []
+FROM nginx:latest
